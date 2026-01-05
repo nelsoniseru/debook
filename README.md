@@ -137,6 +137,9 @@ API_PREFIX=api/v1
 # Update Docker Compose with Your Credentials
 Create or edit docker-compose.yml:
 
+### Docker Compose Configuration
+
+```yaml
 version: '3.8'
 
 services:
@@ -233,6 +236,9 @@ networks:
 
 volumes:
   postgres_data:
+```
+
+**Important**: Replace `your_username_here` and `your_password_here` with your actual PostgreSQL credentials.
 
 
 # Run the command
