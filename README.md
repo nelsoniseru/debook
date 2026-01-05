@@ -8,28 +8,11 @@ Contact: +2349026915561 | nelsoniseru08@gmail.com
 # Architecture
 Microservices Pattern
 
-┌─────────────────────────────────────────────────────────┐
-│                   DeBook Architecture                    │
-└─────────────────────────────────────────────────────────┘
-
-┌─────────────────┐    Kafka Events    ┌─────────────────────┐
-│                 │ ─────────────────▶ │                     │
-│   API Service   │                    │ Notification Service│
-│  (NestJS/TypeORM)│                   │  (NestJS/TypeORM)   │
-│                 │ ◀───────────────── │                     │
-└────────┬────────┘                    └─────────┬───────────┘
-         │                                      │
-         ▼                                      ▼
-┌─────────────────┐                    ┌─────────────────┐
-│ PostgreSQL DB   │                    │ PostgreSQL DB   │
-│  (Posts/        │                    │  (Notifications)│
-│   Interactions) │                    │                 │
-└─────────────────┘                    └─────────────────┘
-
-Legend:
-──────▶  Kafka Events (async communication)
-   │     Database Operations (sync)
-   ▼
+<p align="center">
+  <img src="image.jpeg" alt="DeBook Architecture Diagram" width="800"/>
+  <br>
+  <em>Figure 1: DeBook Microservices Architecture</em>
+</p>
 
 # Service Responsibilities
 API Service: Handles user interactions (create posts, like, comment) and emits Kafka events
