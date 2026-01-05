@@ -65,15 +65,16 @@ cd debook
 
 # Environment Configuration
 
-# ============================================
-# API Service (api-service/.env)
-# ============================================
+## Environment Variables
+
+### API Service
+
+```env
+# Server Configuration
 PORT=3000
 NODE_ENV=development
 
-# ============================================
-# Database Configuration (PostgreSQL)
-# ============================================
+# PostgreSQL Database
 DATABASE_HOST=localhost
 DATABASE_PORT=5432
 DATABASE_USER=your_postgres_username
@@ -81,34 +82,27 @@ DATABASE_PASSWORD=your_postgres_password
 DATABASE_NAME=debook
 DATABASE_SYNCHRONIZE=false
 
-# ============================================
-# Kafka Configuration
-# ============================================
+# Apache Kafka
 KAFKA_BROKERS=localhost:9093
 KAFKA_CLIENT_ID=debook-api-service
 KAFKA_GROUP_ID=debook-group
 KAFKA_INTERACTION_TOPIC=interaction.created
 KAFKA_NOTIFICATION_TOPIC=notification.created
 
-# ============================================
 # Application Settings
-# ============================================
 LOG_LEVEL=debug
 ENABLE_SWAGGER=true
 API_PREFIX=api/v1
+```
 
+### Notification Service
 
-
-
-# ============================================
-# notification-service/.env
-# ============================================
+```env
+# Api-Service Configuration
 PORT=3001
 NODE_ENV=development
 
-# ============================================
-# Database Configuration (PostgreSQL)
-# ============================================
+# PostgreSQL Database
 DATABASE_HOST=localhost
 DATABASE_PORT=5432
 DATABASE_USER=your_postgres_username
@@ -116,23 +110,16 @@ DATABASE_PASSWORD=your_postgres_password
 DATABASE_NAME=debook
 DATABASE_SYNCHRONIZE=false
 
-# ============================================
-# Kafka Configuration
-# ============================================
+# Apache Kafka
 KAFKA_BROKERS=localhost:9093
 KAFKA_CLIENT_ID=debook-notification-service
 KAFKA_GROUP_ID=debook-notification-group
 KAFKA_INTERACTION_TOPIC=interaction.created
 
-# ============================================
 # Application Settings
-# ============================================
 LOG_LEVEL=debug
 API_PREFIX=api/v1
-
-
-
-
+```
 
 # Update Docker Compose with Your Credentials
 Create or edit docker-compose.yml:
@@ -260,7 +247,7 @@ docker-compose down -v
 cd api-service && npm run test
 
 # Notification Service
-cd ../notification-service && npm run test
+cd notification-service && npm run test
 
 # postman url
 [link](https://documenter.getpostman.com/view/13945163/2sA3kXEfh4/)
