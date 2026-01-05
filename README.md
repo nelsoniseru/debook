@@ -9,7 +9,7 @@ Contact: +2349026915561 | nelsoniseru08@gmail.com
 Microservices Pattern
 
 <p align="center">
-  <img src="/image.jpeg" alt="DeBook Architecture Diagram" width="800"/>
+  <img src="https://ibb.co/KpG4nHhC" alt="DeBook Architecture Diagram" width="800"/>
   <br>
   <em>Figure 1: DeBook Microservices Architecture</em>
 </p>
