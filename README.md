@@ -256,3 +256,13 @@ docker-compose down
 
 # Stop and remove volumes
 docker-compose down -v
+
+# for test
+# API Service
+cd api-service && npm run test
+
+# Notification Service
+cd ../notification-service && npm run test
+
+# postman url
+[link](https://documenter.getpostman.com/view/13945163/2sA3kXEfh4/)
