@@ -20,14 +20,14 @@ Notification Service: Listens to Kafka events and creates/manages notifications 
 Backend Framework
 NestJS - Progressive Node.js framework for building efficient server-side applications
 
-Documentation
+[Documentation](https://docs.nestjs.com/)
 
 TypeScript support, Dependency Injection, Modular architecture
 
 Database
 PostgreSQL - Advanced open-source relational database
 
-[Documentation](https://docs.nestjs.com/)
+[Documentation](https://www.postgresql.org/)
 
 TypeORM - ORM for TypeScript and JavaScript
 
