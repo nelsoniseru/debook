@@ -8,11 +8,8 @@ Contact: +2349026915561 | nelsoniseru08@gmail.com
 # Architecture
 Microservices Pattern
 
-<p align="center">
-  <img src="https://ibb.co/KpG4nHhC" alt="DeBook Architecture Diagram" width="800"/>
-  <br>
-  <em>Figure 1: DeBook Microservices Architecture</em>
-</p>
+[link](https://ibb.co/KpG4nHhC)
+
 
 # Service Responsibilities
 API Service: Handles user interactions (create posts, like, comment) and emits Kafka events
