@@ -4,6 +4,8 @@ export class InteractionsSchema1767516134180 implements MigrationInterface {
 
    public async up(queryRunner: QueryRunner): Promise<void> {
           // Create interactions table
+          await queryRunner.query(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`);
+
           await queryRunner.createTable(new Table({
               name: 'interactions',
               columns: [

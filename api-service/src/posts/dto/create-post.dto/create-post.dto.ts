@@ -1,1 +1,8 @@
-export class CreatePostDto {}
+import { IsString, IsNotEmpty, MaxLength } from 'class-validator';
+
+export class CreatePostDto {
+  @IsString()
+  @IsNotEmpty()
+  @MaxLength(500)
+  content: string;
+}

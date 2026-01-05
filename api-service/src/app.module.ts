@@ -10,6 +10,7 @@ import { InteractionsModule } from './interactions/interactions.module';
       isGlobal: true,
       envFilePath: '.env',
     }),
+  
      TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({

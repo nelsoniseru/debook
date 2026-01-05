@@ -3,39 +3,127 @@ version: '3.8'
 services:
   postgres:
     image: postgres:15
+    container_name: debook-postgres
     environment:
       POSTGRES_DB: debook
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 123456
+      POSTGRES_HOST_AUTH_METHOD: trust
     ports:
       - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - debook-network
 
   zookeeper:
-    image: confluentinc/cp-zookeeper
+    image: confluentinc/cp-zookeeper:7.4.0
+    container_name: debook-zookeeper
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+    networks:
+      - debook-network
 
   kafka:
-    image: confluentinc/cp-kafka
+    image: confluentinc/cp-kafka:7.4.0
+    container_name: debook-kafka
     depends_on:
       - zookeeper
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:9093
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    ports:
+      - "9092:9092"
+      - "9093:9093"
+    healthcheck:
+      test: ["CMD-SHELL", "kafka-topics --bootstrap-server localhost:9092 --list || exit 1"]
+      interval: 30s
+      timeout: 20s
+      retries: 5
+      start_period: 60s
+    networks:
+      - debook-network
 
   api-service:
-    build: ./api-service
-    command: npm run start:dev
+    build:
+      context: ./api-service
+      dockerfile: Dockerfile
+    container_name: debook-api-service
+    command: >
+      sh -c "
+      echo 'Waiting for Kafka to be ready...' &&
+      sleep 45 &&
+      npm run start:dev
+      "
     depends_on:
-      - postgres
-      - kafka
+      postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+    environment:
+      - NODE_ENV=development
+      - DATABASE_HOST=postgres
+      - DATABASE_PORT=5432
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=123456
+      - DATABASE_NAME=debook
+      - KAFKA_BROKERS=kafka:9092
+      - PORT=3000
     ports:
-      - "3000:3000"
+      - "0.0.0.0:3000:3000"  
+    volumes:
+      - ./api-service:/app
+      - /app/node_modules
+    restart: unless-stopped
+    networks:
+      - debook-network
 
   notification-service:
-    build: ./notification-service
-    command: npm run start
+    build:
+      context: ./notification-service
+      dockerfile: Dockerfile
+    container_name: debook-notification-service
+    command: >
+      sh -c "
+      echo 'Waiting for Kafka to be ready...' &&
+      sleep 60 &&
+      npm run start:dev
+      "
     depends_on:
       - kafka
+    environment:
+      - NODE_ENV=development
+      - DATABASE_HOST=postgres
+      - DATABASE_PORT=5432
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=123456
+      - DATABASE_NAME=debook
+      - KAFKA_BROKERS=kafka:9092
+      - PORT=3001
+    ports:
+      - "0.0.0.0:3001:3001" 
+    volumes:
+      - ./notification-service:/app
+      - /app/node_modules
+    restart: unless-stopped
+    networks:
+      - debook-network
+
+volumes:
+  postgres_data:
+
+networks:
+  debook-network:
+    driver: bridge
