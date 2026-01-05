@@ -22,8 +22,6 @@ NestJS - Progressive Node.js framework for building efficient server-side applic
 
 [Documentation](https://docs.nestjs.com/)
 
-TypeScript support, Dependency Injection, Modular architecture
-
 Database
 PostgreSQL - Advanced open-source relational database
 
